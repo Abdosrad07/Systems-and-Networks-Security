@@ -1,0 +1,266 @@
+﻿### show running-config
+show running-config
+
+Building configuration...
+
+
+
+Current configuration : 1798 bytes
+
+!
+
+version 12.4
+
+service timestamps debug datetime msec
+
+service timestamps log datetime msec
+
+service password-encryption
+
+!
+
+hostname R-SIEGE
+
+!
+
+boot-start-marker
+
+boot-end-marker
+
+!
+
+enable secret 5 $1$QK9T$TBqVsWzJmAnq.3zUWvpLW.
+
+!
+
+no aaa new-model
+
+memory-size iomem 5
+
+ip cef
+
+!
+
+!
+
+no ip dhcp use vrf connected
+
+ip dhcp excluded-address 10.10.10.1 10.10.10.99
+
+!
+
+ip dhcp pool LAN-SIEGE
+
+   network 10.10.10.0 255.255.255.0
+
+   default-router 10.10.10.1 
+
+   dns-server 203.0.113.10 
+
+   domain-name camtrust.lab
+
+!
+
+!
+
+no ip domain lookup
+
+ip domain name camtrust.lab
+
+!
+
+multilink bundle-name authenticated
+
+!
+
+!
+
+!
+
+!
+
+!
+
+!
+
+!
+
+!
+
+!
+
+!
+
+!
+
+!
+
+!
+
+!
+
+!
+
+!
+
+!
+
+!
+
+!
+
+!
+
+!
+
+username admin privilege 15 secret 5 $1$tbhL$./Dfa7RX4xuO/iYVZu.JS1
+
+archive
+
+ log config
+
+  hidekeys
+
+! 
+
+!
+
+!
+
+!
+
+ip ssh time-out 60
+
+ip ssh authentication-retries 2
+
+ip ssh version 2
+
+!
+
+!
+
+!
+
+!
+
+interface FastEthernet0/0
+
+ description LAN-SIEGE 10.10.10.0/24
+
+ ip address 10.10.10.1 255.255.255.0
+
+ duplex auto
+
+ speed auto
+
+!
+
+interface Serial0/0
+
+ description LIAISON-INTER-SITES-R-DLA 172.16.12.0/30
+
+ ip address 172.16.12.1 255.255.255.252
+
+ no fair-queue
+
+ clock rate 64000
+
+!
+
+interface FastEthernet0/1
+
+ description WAN-SIEGE-FAI 198.51.100.0/30
+
+ ip address 198.51.100.2 255.255.255.252
+
+ duplex auto
+
+ speed auto
+
+!
+
+ip forward-protocol nd
+
+ip route 0.0.0.0 0.0.0.0 198.51.100.1
+
+ip route 10.20.10.0 255.255.255.0 172.16.12.2
+
+!
+
+!
+
+no ip http server
+
+no ip http secure-server
+
+!
+
+snmp-server group CAMGRP v3 priv 
+
+snmp-server community camtrust_ro RO
+
+snmp-server location Site-Yaounde-Lab
+
+snmp-server contact admin@camtrust.lab
+
+no cdp run
+
+!
+
+!
+
+!
+
+!
+
+!
+
+!
+
+control-plane
+
+!
+
+!
+
+!
+
+!
+
+!
+
+!
+
+!
+
+!
+
+!
+
+banner motd ^CCR-SIEGE - TP CamTrust (siege de Yaounde)Administration locale : SSH uniquement^C
+
+!
+
+line con 0
+
+ exec-timeout 0 0
+
+ logging synchronous
+
+line aux 0
+
+line vty 0 4
+
+ login local
+
+ transport input ssh
+
+!
+
+!
+
+end
+
+
+
+R-SIEGE#
